@@ -1,5 +1,10 @@
 import {Row, Form, Button, Col} from "react-bootstrap";
-import React from 'react'
+import React from 'react';
+import validator from 'validator';
+const emailState = {
+    email: '',
+    error: ''
+}
 
 class SignUpForm extends React.Component {
 
@@ -7,19 +12,57 @@ class SignUpForm extends React.Component {
         super(props)
         this.state = {  
             fname: '',
-            mail:'',
+            email:'',
             pass:'',
-            cpass:''
+            cpass:'',
         } 
     }
+    
+    // validate = () => {
+    // const [emailError, setEmailError] = useState('')
+    // const validateEmail = (ev) => {
+    //   var email = ev.target.value
+    
+    //   if (validator.isEmail(email)) {
+    //     setEmailError('Valid Email :)')
+    //   } else {
+    //     setEmailError('Enter valid Email!')
+    //   }
+    // }
+    //   if (validator.isEmail(email)) {
+    //     setEmailError('Valid Email :)')
+    //   } else {
+    //     setEmailError('Enter valid Email!')
+    //   }
+    // }
 
+// --------------------------------------------------
 
+    emailValidation(){
+        const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if(!this.state.email || regex.test(this.state.email) === false){
+            this.setState({
+                error: "Email is not valid"
+            });
+            return false;
+        }
+        return true;
+    }
+    handlechangeEmail(ev){
+        this.setState({'email': ev.target.value})
+      }
+    onSubmit(){
+        if(this.emailValidation()){
+            console.log(this.state);
+            this.setState(emailState);
+        }
+    }
+    
+    
     handlechangeName(e){
       this.setState({'fname': e.target.value})
     }
-    handlechangeEmail(ev){
-        this.setState({'mail': ev.target.value})
-      }
+   
     handlechangePassword(evn){
         this.setState({"pass" : evn.target.value})
     }
@@ -33,39 +76,40 @@ class SignUpForm extends React.Component {
             <h3>{this.props.title}</h3>
             <hr/>
             <Form.Group className="mb-3" controlId="formBasicName">
-                <Form.Label>Name</Form.Label>
+                <Form.Label>Name<span style={{color:'red',fontSize:'20px'}}>*</span></Form.Label>
                 <Form.Control type="text" name="fname" onChange={(e)=>this.handlechangeName(e)} value={this.state.fname} placeholder="Full name" />
-                {this.state.fname=='' && (<>Name is required</>)}
+                {this.state.fname=='' && (<div style={{color:"red"}}>required</div>)}
                 
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="text" name="mail" onChange={(ev)=>this.handlechangeEmail(ev)} value={this.state.mail} placeholder="Enter email" />
-                {this.state.mail=='' && (<>E-mail is required</>)}
+                <Form.Label>Email address<span style={{color:'red',fontSize:'20px'}}>*</span></Form.Label>
+                <Form.Control type="text" name="email" onChange={(ev)=>this.handlechangeEmail(ev)} value={this.state.email}  placeholder="Enter email" />
+                {this.state.email=='' && (<div style={{color:"red"}}>required</div>)}
+                <span className="text-danger">{this.state.error}</span>
+                {/* <div>{emailError}</div> */}
                 <Form.Text className="text-muted">
-                
                 </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>Password<span style={{color:'red',fontSize:'20px'}}>*</span></Form.Label>
                 <Form.Control type="password" name="pass" onChange={(evn)=>this.handlechangePassword(evn)} value={this.state.pass} placeholder="Password" />
-                {this.state.pass=='' && (<>Password is required</>)}
+                {this.state.pass=='' && (<div style={{color:"red"}}>required</div>)}
                 
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
-                <Form.Label>Confirm Password</Form.Label>
+                <Form.Label>Confirm Password<span style={{color:'red',fontSize:'20px'}}>*</span></Form.Label>
                 <Form.Control type="password" name="cpass" onChange={(evnt)=>this.handlechangeCPassword(evnt)} value={this.state.cpass} placeholder="Confirm Password" />
-                {this.state.cpass=='' && (<>Confirm Password is required</>)}
+                {this.state.cpass=='' && (<div style={{color:"red"}}>required</div>)}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Check type="checkbox" label="Check me out" />
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onClick={()=>this.onSubmit()}>
                 Submit
             </Button>
 
