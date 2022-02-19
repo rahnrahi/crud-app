@@ -6,14 +6,27 @@ class SignUpForm extends React.Component {
     constructor(props){
         super(props)
         this.state = {  
-            fname: ''
+            fname: '',
+            mail:'',
+            pass:'',
+            cpass:''
         } 
     }
+
 
     handlechangeName(e){
       this.setState({'fname': e.target.value})
     }
-    
+    handlechangeEmail(ev){
+        this.setState({'mail': ev.target.value})
+      }
+    handlechangePassword(evn){
+        this.setState({"pass" : evn.target.value})
+    }
+    handlechangeCPassword(evnt){
+        this.setState({"cpass" : evnt.target.value})
+    }
+
     render() { 
         return (
         <Form>
@@ -23,24 +36,29 @@ class SignUpForm extends React.Component {
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" name="fname" onChange={(e)=>this.handlechangeName(e)} value={this.state.fname} placeholder="Full name" />
                 {this.state.fname=='' && (<>Name is required</>)}
+                
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control type="text" name="mail" onChange={(ev)=>this.handlechangeEmail(ev)} value={this.state.mail} placeholder="Enter email" />
+                {this.state.mail=='' && (<>E-mail is required</>)}
                 <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
+                
                 </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control type="password" name="pass" onChange={(evn)=>this.handlechangePassword(evn)} value={this.state.pass} placeholder="Password" />
+                {this.state.pass=='' && (<>Password is required</>)}
+                
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" placeholder="Confirm Password" />
+                <Form.Control type="password" name="cpass" onChange={(evnt)=>this.handlechangeCPassword(evnt)} value={this.state.cpass} placeholder="Confirm Password" />
+                {this.state.cpass=='' && (<>Confirm Password is required</>)}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
